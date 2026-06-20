@@ -48,6 +48,7 @@
                             <field name="garden_area"/>
                             <field name="garage"/>
                             <field name="garden_orientation"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                         </group>
                     </group>
                     <group>
