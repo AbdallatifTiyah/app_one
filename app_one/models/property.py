@@ -1,0 +1,61 @@
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+
+
+class Property(models.Model):
+    _name = 'property'
+    _description = "Model property"
+
+    name = fields.Char(required=True, default='New')
+    description = fields.Text()
+    postcode = fields.Char(required=True)
+    date_availability = fields.Date()
+    excepted_price = fields.Float(digits=(0,5))
+    selling_price = fields.Float()
+    bedrooms = fields.Integer()
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+    garden_orientation = fields.Selection([
+        ('north','North'),
+        ('south','South'),
+        ('east','East'),
+        ('west','West'),
+    ], default='north')
+    owner_id = fields.Many2one('owner')
+
+    # _sql_constraints = [
+    #     ('unique_name','unique("name")','This name is exists!'),
+    # ]
+
+
+    # @api.constrains('bedrooms')
+    # def _check_bedrooms_greater_zero(self):
+    #     for rec in self:
+    #         if rec.bedrooms == 0:
+    #             raise ValidationError('Please add valid number of bedrooms!')
+            
+
+    # @api.model_create_multi
+    # def create(self, vals):
+    #     res = super(Property, self).create(vals)
+    #     print("inside create method")
+    #     return res
+    
+    # @api.model
+    # def _search(self, domain, offset=0, limit=None, order=None):
+    #     res = super(Property, self)._search(domain, offset=0, limit=None, order=None)
+    #     print("inside search method")
+    #     return res
+    
+    # def write(self, vals):
+    #     res = super(Property, self).write(vals)
+    #     print("inside write method")
+    #     return res
+    
+    # def unlink(self):
+    #     res = super(Property, self).unlink()
+    #     print("inside unlink method")
+    #     return res
