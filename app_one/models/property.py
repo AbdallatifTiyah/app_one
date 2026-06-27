@@ -33,6 +33,24 @@ class Property(models.Model):
         ('sold', 'Sold'),
     ], default = 'draft')
 
+    def action_draft(self):
+        for rec in self:
+            print("inside draft function")
+            rec.state = 'draft'
+           # rec.write({
+           #     'state': 'draft'
+           # })
+
+    def action_pending(self):
+        for rec in self:
+            print("inside pending function")
+            rec.state = 'pending'
+
+    def action_sold(self):
+        for rec in self:
+            print("inside sold function")
+            rec.state = 'sold'
+
     # _sql_constraints = [
     #     ('unique_name','unique("name")','This name is exists!'),
     # ]
