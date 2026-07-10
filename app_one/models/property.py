@@ -10,8 +10,9 @@ class Property(models.Model):
     description = fields.Text()
     postcode = fields.Char(required=True)
     date_availability = fields.Date()
-    excepted_price = fields.Float(digits=(0,5))
+    excepted_price = fields.Float()
     selling_price = fields.Float()
+    diff = fields.Float(compute='_compute_diff', store=False, readonly=False)
     bedrooms = fields.Integer()
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -50,6 +51,26 @@ class Property(models.Model):
         for rec in self:
             print("inside sold function")
             rec.state = 'sold'
+
+    @api.depends('excepted_price', 'selling_price', 'owner_id.phone')
+    def _compute_diff(self):
+        for rec in self:
+            print(rec)
+            print("inside _compute_diff method")
+            rec.diff = rec.excepted_price - rec.selling_price
+
+    @api.onchange('excepted_price')
+    def _onchange_excepted_price(self):
+        for rec in self:
+            print(rec)
+            print("inside _onchange_excepted_price method")
+            return {
+                'warning': {
+                    'title': 'Warning',
+                    'message': 'Negative value',
+                    'type': 'notification',
+                }
+            }
 
     # _sql_constraints = [
     #     ('unique_name','unique("name")','This name is exists!'),

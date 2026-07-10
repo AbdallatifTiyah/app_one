@@ -3,7 +3,7 @@
         <field name="name">property tree</field>
         <field name="model">property</field>
         <field name="arch" type="xml">
-            <list>
+            <list class="header_custom">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="owner_id"/>
@@ -46,6 +46,7 @@
                             <field name="postcode"/>
                             <field name="excepted_price"/>
                             <field name="selling_price"/>
+                            <field name="diff"/>
                             <field name="bedrooms"/>
                             <field name="living_area"/>
                             <field name="facades"/>
