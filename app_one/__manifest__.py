@@ -15,7 +15,7 @@
         'views/tag_view.xml'
     ],
     'assets': {
-        'web.assets_backend': ['static/src/css/property.css'],
+        'web.assets_backend': ['app_one/static/src/css/property.css'],
     },
     'application': True,
 }
