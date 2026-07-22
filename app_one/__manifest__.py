@@ -4,7 +4,7 @@
     'category': 'Tools',
     'version': '19.0.1.0',
     'license': 'LGPL-3',
-    'depends': ['base',
+    'depends': ['base', 'mail',
     ],
 
     'data': [

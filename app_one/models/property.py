@@ -5,11 +5,12 @@ from odoo.exceptions import ValidationError
 class Property(models.Model):
     _name = 'property'
     _description = "Model property"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=True, default='New')
-    description = fields.Text()
+    description = fields.Text(tracking=True)
     postcode = fields.Char(required=True)
-    date_availability = fields.Date()
+    date_availability = fields.Date(tracking=True)
     excepted_price = fields.Float()
     selling_price = fields.Float()
     diff = fields.Float(compute='_compute_diff', store=False, readonly=False)
@@ -79,7 +80,7 @@ class Property(models.Model):
         "UNIQUE(name)",
         "This name already exists!"
     )
-    
+
     # _sql_constraints = [
     #     ('unique_name','unique("name")','This name is exists!'),
     # ]
