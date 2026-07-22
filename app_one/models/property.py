@@ -82,6 +82,7 @@ class Property(models.Model):
     )
 
     line_ids = fields.One2many('property.line', 'property_id')
+    active = fields.Boolean(string="Active", default=True)
 
     # _sql_constraints = [
     #     ('unique_name','unique("name")','This name is exists!'),
