@@ -81,6 +81,8 @@ class Property(models.Model):
         "This name already exists!"
     )
 
+    Line_ids = fields.One2many('property.line', 'property_id')
+
     # _sql_constraints = [
     #     ('unique_name','unique("name")','This name is exists!'),
     # ]
@@ -114,3 +116,12 @@ class Property(models.Model):
     #     res = super(Property, self).unlink()
     #     print("inside unlink method")
     #     return res
+
+
+class PropertyLine(models.Model):
+    _name = 'property.line'
+    _description = "Model property line"
+
+    description = fields.Char()
+    area = fields.Float()
+    property_id = fields.Many2one('property')
