@@ -27,6 +27,9 @@ class Property(models.Model):
     ], default='north')
     owner_id = fields.Many2one('owner')
     tag_ids = fields.Many2many('tag')
+    owner_address = fields.Char(related='owner_id.address', readonly=False)
+    # owner_address = fields.Char(related='owner_id.address', readonly=False, store=True)
+    owner_phone = fields.Char(related='owner_id.phone', readonly=False)
 
     state = fields.Selection([
         ('draft', 'Draft'),
