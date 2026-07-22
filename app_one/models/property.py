@@ -81,7 +81,7 @@ class Property(models.Model):
         "This name already exists!"
     )
 
-    Line_ids = fields.One2many('property.line', 'property_id')
+    line_ids = fields.One2many('property.line', 'property_id')
 
     # _sql_constraints = [
     #     ('unique_name','unique("name")','This name is exists!'),
