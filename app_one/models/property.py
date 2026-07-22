@@ -75,6 +75,11 @@ class Property(models.Model):
                 }
             }
 
+    _unique_name = models.Constraint(
+        "UNIQUE(name)",
+        "This name already exists!"
+    )
+    
     # _sql_constraints = [
     #     ('unique_name','unique("name")','This name is exists!'),
     # ]
