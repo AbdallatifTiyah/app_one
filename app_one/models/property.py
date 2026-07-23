@@ -7,6 +7,7 @@ class Property(models.Model):
     _description = "Model property"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    ref = fields.Char(default='New', readonly=True)
     name = fields.Char(required=True, default='New')
     description = fields.Text(tracking=True)
     postcode = fields.Char(required=True)
@@ -135,6 +136,21 @@ class Property(models.Model):
     #     res = super(Property, self).unlink()
     #     print("inside unlink method")
     #     return res
+
+    def action(self):
+        print(self.env)
+        print(self.env.user)
+        print(self.env.user.login)
+        print(self.env.user.name)
+        print(self.env.user.id)
+        print(self.env['owner'].search([]))
+
+    @api.model
+    def create(self, vals):
+        result = super(Property, self).create(vals)
+        if result.ref == 'New':
+            result.ref = self.env['ir.sequence'].next_by_code('property.sequence')
+        return result
 
 
 class PropertyLine(models.Model):
