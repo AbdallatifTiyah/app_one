@@ -3,9 +3,10 @@
         <field name="name">property tree</field>
         <field name="model">property</field>
         <field name="arch" type="xml">
-            <list class="header_custom">
+            <list class="header_custom" decoration-danger="(is_late)">
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="is_late" invisible="1"/>
                 <field name="owner_id"/>
                 <field name="date_availability"/>
                 <field name="selling_price"/>
@@ -44,6 +45,8 @@
                     <group>
                         <group string="General Info.">
                             <field name="date_availability"/>
+                            <field name="expected_selling_date"/>
+                            <field name="is_late" invisible="1"/>
                             <field name="postcode"/>
                             <field name="excepted_price"/>
                             <field name="selling_price"/>
@@ -109,7 +112,7 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="property_close_action" model="ir.actions.server">
+    <!-- <record id="property_close_action" model="ir.actions.server">
         <field name="name">Close Property</field>
         <field name="model_id" ref="model_property"/>
         <field name="binding_model_id" ref="model_property"/>
@@ -117,6 +120,18 @@
         <field name="code">
             action = records.action_close()
         </field>
+    </record> -->
+
+    <record id="check_selling_date_cron" model="ir.cron">
+        <field name="name">Check Expected Selling Date</field>
+        <field name="model_id" ref="model_property"/>
+        <field name="state">code</field>
+        <field name="code">
+            model.check_expected_selling_date()
+        </field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
     </record>
 
     <menuitem

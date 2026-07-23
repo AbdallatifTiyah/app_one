@@ -11,6 +11,8 @@ class Property(models.Model):
     description = fields.Text(tracking=True)
     postcode = fields.Char(required=True)
     date_availability = fields.Date(tracking=True)
+    expected_selling_date = fields.Date(tracking=True)
+    is_late = fields.Boolean()
     excepted_price = fields.Float()
     selling_price = fields.Float()
     diff = fields.Float(compute='_compute_diff', store=False, readonly=False)
@@ -61,6 +63,16 @@ class Property(models.Model):
         for rec in self:
             print("inside close function")
             rec.state = 'close'
+
+
+    def check_expected_selling_date(self):
+        property_ids = self.search([])
+        for rec in property_ids:
+            if rec.expected_selling_date and rec.expected_selling_date < fields.Date.today():
+                rec.is_late = True
+            else:
+                rec.is_late = False
+        print("inside check_expected_selling_date function")
 
     @api.depends('excepted_price', 'selling_price', 'owner_id.phone')
     def _compute_diff(self):
