@@ -36,6 +36,7 @@ class Property(models.Model):
         ('draft', 'Draft'),
         ('pending', 'Pending'),
         ('sold', 'Sold'),
+        ('close', 'Closed'),
     ], default = 'draft')
 
     def action_draft(self):
@@ -55,6 +56,11 @@ class Property(models.Model):
         for rec in self:
             print("inside sold function")
             rec.state = 'sold'
+
+    def action_close(self):
+        for rec in self:
+            print("inside close function")
+            rec.state = 'close'
 
     @api.depends('excepted_price', 'selling_price', 'owner_id.phone')
     def _compute_diff(self):
