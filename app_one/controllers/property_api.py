@@ -1,4 +1,5 @@
 import json
+from urllib.parse import parse_qs
 from odoo import http
 from odoo.http import request
 
@@ -107,5 +108,35 @@ class PropertyApi(http.Controller):
         except Exception as e:
             return request.make_json_response({
                 "message": "Error deleting property",
+                "error": str(e)
+            }, status=400)
+
+
+
+    @http.route("/v1/properties", methods=["GET"], type="http", auth="none", csrf=False)
+    def get_property_list(self):
+        try:
+            params = parse_qs(request.httprequest.query_string.decode('utf-8'))
+            property_domain = []
+            if params.get('state'):
+                property_domain += [('state', '=', params.get('state')[0])]
+            
+            properties = request.env['property'].sudo().search(property_domain)
+            property_list = []
+            for property_record in properties:
+                property_list.append({
+                    "id": property_record.id,
+                    "name": property_record.name,
+                    "description": property_record.description,
+                    "Ref": property_record.ref,
+                    "bedrooms": property_record.bedrooms
+                })
+            return request.make_json_response({
+                "properties": property_list
+            })
+        
+        except Exception as e:
+            return request.make_json_response({
+                "message": "Error retrieving properties",
                 "error": str(e)
             }, status=400)
