@@ -65,3 +65,26 @@ class PropertyApi(http.Controller):
                 "error": str(e)
             }, status=400)
     
+
+    @http.route("/v1/property/<int:property_id>", methods=["GET"], type="http", auth="none", csrf=False)
+    def get_property(self, property_id):
+        try:
+            property_record = request.env['property'].sudo().search([('id', '=', property_id)], limit=1)
+            if not property_record:
+                return request.make_json_response({
+                    "message": "Property not found"
+                }, status=404)
+
+            return request.make_json_response({
+                "id": property_record.id,
+                "name": property_record.name,
+                "description": property_record.description,
+                "Ref": property_record.ref,
+                "bedrooms": property_record.bedrooms    
+            })
+        
+        except Exception as e:
+            return request.make_json_response({
+                "message": "Error retrieving property",
+                "error": str(e)
+            }, status=400)
