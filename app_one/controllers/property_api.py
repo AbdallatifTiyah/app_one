@@ -9,9 +9,33 @@ class PropertyApi(http.Controller):
         args = request.httprequest.data.decode()
         vals = json.loads(args)
 
+        if not vals.get("name"):
+            return request.make_json_response({
+                "message": "Property name is required"
+            }, status=400)
+
+        try:
+            res = request.env['property'].sudo().create(vals)
+            if res:
+                return request.make_json_response({
+                    "message": "Property created successfully",
+                    "id": res.id,
+                    "name": res.name
+                }, status=201)
+        except Exception as e:
+            return request.make_json_response({
+                "message": "Error creating property",
+                "error": str(e)
+            }, status=400)
+
+
+    @http.route("/v1/property/json", methods=["POST"], type="json", auth="none", csrf=False)
+    def post_property_json(self):
+        args = request.httprequest.data.decode()
+        vals = json.loads(args)
         res = request.env['property'].sudo().create(vals)
         if res:
             return request.make_json_response({
-                "message": "Property created successfully"
-            }, status=200)
+                "message": "Property created successfully using JSON API"
+            })
         
